@@ -1,27 +1,23 @@
-function fetchLocal(url) {
-  return new Promise(function(resolve, reject) {
-    var xhr = new XMLHttpRequest
-    xhr.onload = function() {
-      resolve(new Response(xhr.responseText, {status: xhr.status}))
-    }
-    xhr.onerror = function() {
-      reject(new TypeError('Local request failed'))
-    }
-    xhr.open('GET', url)
-    xhr.send(null)
-  })
-}
+var svgHeight = 240;
+var barElements;
+var dataSet = [1.83, 3.63, 2.52, 9.09, 2.76, 1.28]
 
-d3.csv("data/2017.csv", function(error, data) {
-  var dataSet = [];
-  var labelName = [];
+barElements = d3.select("#myGraph").selectAll("rect").data(dataSet)
 
-  for(var i in data[0]) {
-    dataSet.push(data[0][i]);
-    labelName.push(i)
-  }
-
-  console.log(dataSet);
-  console.log("-----");
-  console.log(labelName);
-});
+barElements.enter()
+    .append("rect")
+    .attr("class", "bar")
+    .attr("height", function(d,i){
+      return d * 10;
+    })
+    .attr("width", 20)
+    .attr("x", function(d,i){
+      return i*25
+    })
+    .attr("y", function(d,i) {
+      return svgHeight-d*10;
+    })
+    .selectAll("rect")
+    .data(dataSet)
+    .enter()
+    .append("rect")
