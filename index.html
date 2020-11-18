@@ -1,7 +1,24 @@
-<!DOCTYPE html>
+!<!DOCTYPE html>
 <html>
+  <head>
+    <script src='d3.js'></script>
+  </head>
   <body>
-    <h1> HE </h1>
-    <p> Hello </p>
+      <svg width="500" height="500"></svg>
+      <script>
+        const data = [5,10,15,20,25,30,35,40,45,50];
+        const color = ['skyblue', 'blue', 'lime', 'red',
+                        'yellowgreen', 'violet', 'blueviolet',
+                      'chocolate', 'darkgreen', 'yellow']
+
+        const svg = d3.select('svg');
+
+        svg.selectAll('bar').data(data).enter().append('rect')
+           .attr('fill', (d,i)=>{return color[i]})
+           .attr('height', (d,i) => {return d})
+           .attr('width', 40).attr('x', (d,i) => {return 50 * i})
+           .attr('y', (d,i) => {return 100 - data[i]})
+
+      </script>
   </body>
 </html>
