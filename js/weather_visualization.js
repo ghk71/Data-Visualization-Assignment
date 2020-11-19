@@ -61,7 +61,7 @@ d3.csv("data/weather.csv", function(d, i, columns) {
     .attr("fill", "#000")
     .attr("font-weight", "bold")
     .attr("text-anchor", "start")
-    .text("Population");
+    .text("rate");
 
   var legend = g.append("g")
       .attr("font-family", "sans-serif")

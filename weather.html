@@ -8,10 +8,22 @@
         .axis .domain {
           display: none;
         }
+        button:hover {
+          background-color: #B4B4B4;
+          color: white;
+        }
     </style>
   </head>
   <body>
-    <svg width="960" height="500"></svg>
+    <h1>Weather</h1>
+    <br />
+    <br />
+    <br />
+    <div style="width:1000px;height:600px;">
+      <h2 style="margin-left:450px;">Weather Graph</h2>
+      <button style="float:right;margin-right:60px;" onclick="location.href='index.html'">back to menu</button>
+      <svg width="960" height="500"></svg>
+    </div>
     <script src="js/weather_visualization.js"></script>
   </body>
 </html>
