@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script src="https://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+    <style>
+    .axis .domain {
+      display: none;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>음주운전 단속 통계</h1>
+    <br />
+    <br />
+    <br />
+    <div style="width:2000px;height=600px;">
+      <select onchange=foo(this)>
+        <option myid=0> Line Chart </option>
+        <option myid=1> Bar Chart </option>
+      </select>
+      <h2 style="margin-left:450px;">음주운전 단속 통계 그래프</h2>
+      <button style="float:left;margin-right:60px;" onclick="location.href='../index.html'">back to menu</button>
+      <br />
+      <br />
+      <br />
+      <div id="barChart"></div>
+      <div id="lineChart"></div>
+    </div>
+
+    <script src="../js/drunk_visualization.js"> </script>
+  </body>
+</html>
