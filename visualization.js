@@ -1,44 +1,156 @@
-var width = 900, height=300, pad=20, left_pad = 100;
+var svg = d3.select("svg"),
+    margin = {top:20, right:20, bottom:30, left: 40},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom,
+    g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var x = d3.scale.ordinal().rangeRoundBands([left_pad, width-pad], 0.1);
-var y = d3.scale.linear().range([height-pad, pad]);
+var x0 = d3.scaleBand()
+    .rangeRound([0, width])
+    .paddingInner(0.1);
 
-var xAxis = d3.svg.axis().scale(x).orient("bottom");
-var yAxis = d3.svg.axis().scale(y).orient("left");
+var x1 = d3.scaleBand()
+    .padding(0.05);
 
-var svg = d3.select("#graph").append("svg")
-            .attr("width", width).attr("height", height);
+var y = d3.scaleLinear()
+    .rangeRound([height, 0]);
 
-d3.json('histogram-hours.json', function(data) {
-  data = d3.keys(data)
-          .map(function (key) {
-            return {
-              bucket: Number(key),
-              N: data[key]
-            };
-          });
+var z= d3.scaleOrdinal()
+    .range(["#98abc5", "#6b486b", "#ff8c00"]);
 
-  x.domain(data.map(function (d) {return d.bucket;}));
-  y.domain([0, d3.max(data, function(d) {return d.N;})]);
+d3.csv("Data/weather.csv", function(d, i, columns) {
+  for(var i=1, n=columns.length; i<n; ++i) {
+    d[columns[i]] = +d[columns[i]];
+  }
+  return d;
+  }, function(error, data) {
+  if(error) throw error;
 
-  svg.append("g")
-     .attr("class", "axis")
-     .attr("transform", "translate(0, "+(height-pad)+")")
-     .call(xAxis);
+  var keys = data.columns.slice(1);
 
-  svg.append("g")
-     .attr("class", "axis")
-     .attr("transform", "translate(" +(left_pad-pad)+", 0)")
-     .call(yAxis);
+  x0.domain(data.map(function(d) {return d.kind; }));
+  x1.domain(keys).rangeRound([0, x0.bandwidth()]);
+  y.domain([0, d3.max(data, function(d) {return d3.max(keys, function(key) {return d[key]; }); })]).nice();
 
-  svg.selectAll('rect')
-     .data(data)
-     .enter()
-     .append('rect')
-     .attr('class', 'bar')
-     .attr('x', function(d) {return x(d.bucket); })
-     .attr('width', x.rangeBand())
-     .attr('y', function(d) {return y(d.N); })
-     .attr('height', function(d) {return height-pad-y(d.N); });
+  g.append("g")
+    .selectAll("g")
+    .data(data)
+    .enter().append("g")
+    .attr("class", "bar")
+    .attr("transform", function(d) {return "translate(" + x0(d.kind) + ",0)"; })
+    .selectAll("rect")
+    .data(function(d) {return keys.map(function(key) {return {key: key, value: d[key]}; }); })
+    .enter().append("rect")
+      .attr("x", function(d) { return x1(d.key); })
+      .attr("y", function(d) { return y(d.value); })
+      .attr("width", x1.bandwidth())
+      .attr("height", function(d) { return height - y(d.value); })
+      .attr("fill", function(d) { return z(d.key); });
 
+  g.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x0));
+
+  g.append("g")
+    .attr("class", "y axis")
+    .call(d3.axisLeft(y).ticks(null, "s"))
+    .append("text")
+    .attr("x", 2)
+    .attr("y", y(y.ticks().pop()) + 0.5)
+    .attr("dy", "0.32em")
+    .attr("fill", "#000")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start")
+    .text("Population");
+
+  var legend = g.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+      .selectAll("g")
+      .data(keys.slice().reverse())
+      .enter().append("g")
+      .attr("transform", function(d, i) {return "translate(0, " + i*20 + ")"; });
+
+  legend.append("rect")
+    .attr("x", width - 17)
+    .attr("width", 15)
+    .attr("height", 15)
+    .attr("fill", z)
+    .attr("stroke", z)
+    .attr("stroke-width", 2)
+    .on("click", function(d) { update(d) });
+
+  legend.append("text")
+    .attr("x", width - 24)
+    .attr("y", 0.5)
+    .attr("dy", "0.32em")
+    .text(function(d) {return d;});
+
+  var filtered = [];
+
+  function update(d) {
+    if(filtered.indexOf(d) == -1) {
+      filtered.push(d);
+
+      if(filtered.length == keys.length) filtered = [];
+    }
+
+    else {
+      filtered.splice(filtered.indexOf(d), 1);
+    }
+
+    var newKeys = [];
+    keys.forEach(function (d) {
+      if(filtered.indexOf(d) == -1) {
+        newKeys.push(d);
+      }
+    })
+
+    x1.domain(newKeys).rangeRound([0, x0.bandwidth()]);
+    y.domain([0, d3.max(data, function(d) {return d3.max(keys, function(key) {if(filtered.indexOf(key) == -1) return d[key]; }); })]).nice();
+      svg.select(".y").transition().call(d3.axisLeft(y).ticks(null, "s")).duration(500);
+
+      var bars = svg.selectAll(".bar").selectAll("rect")
+          .data(function(d) {return keys.map(function(key) {return {key:key, value:d[key]}; }); });
+
+      bars.filter(function(d) {
+          return filtered.indexOf(d.key) > -1;
+        })
+        .transition()
+        .attr("x", function(d) {
+          return (+d3.select(this).attr("x")) + (+d3.select(this).attr("width")) / 2;
+        })
+        .attr("height", 0)
+        .attr("width", 0)
+        .attr("y", function(d) {return height; })
+        .duration(500);
+
+      bars.filter(function(d) {
+          return filtered.indexOf(d.key) == -1;
+        })
+        .transition()
+        .attr("x", function(d) {return x1(d.key); })
+        .attr("y", function(d) {return y(d.value); })
+        .attr("height", function(d) {return height - y(d.value); })
+        .attr("width", x1.bandwidth())
+        .attr("fill", function(d) {return z(d.key); })
+        .duration(500);
+
+      legend.selectAll("rect")
+        .transition()
+        .attr("fill", function(d) {
+          if(filtered.length) {
+            if(filtered.indexOf(d) == -1) {
+              return z(d);
+            }
+            else {
+              return "white";
+            }
+          }
+          else {
+            return z(d);
+          }
+        }).duration(100);
+  }
 });
