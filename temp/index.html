@@ -59,6 +59,7 @@
         d.properties.population = popByName.get(d.properties.name);
         d.properties.density = d.properties.population / path.area(d);
         d.properties.quantized = quantize(d.properties.density);
+        console.log(d.properties.density + " " + d.properties.quantized);
       });
 
       svg.selectAll("path")

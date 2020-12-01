@@ -1,35 +1,90 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <title></title>
     <style>
-    path {
-      stroke: white;
-      stroke-width: 0.25px;
-      fill: grey;
-    }
-    datalist {
-      display: inline-block;
-    }
+    ul, ol, li { list-style:none; margin:0; padding: 0; }
+
+    ul.myMenu{color: white;}
+    ul.myMenu > li {display:inline-block; width:200px; padding:5px 10px; background:red;
+      text-align:center; position:relative; color: white;}
+    ul.myMenu > li:hover {background:black; }
+
+    ul.myMenu > li ul.submenu { display:none; position:absolute; top:30px; left:0; color: white;}
+    ul.myMenu > li:hover ul.submenu { display:block; }
+
+    ul.myMenu > li ul.submenu > li {display:inline-block; width:200px; padding:5px 10px;
+      background:red; text-align:center; color: white; }
+    ul.myMenu > li ul.submenu > li:hover {background:black;}
+
+    a { color:white;text-decoration: none;}
+
     </style>
-
-  <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
-  <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
-
-  <script src="http://d3js.org/d3.v4.min.js"></script>
-  <script src="http://d3js.org/topojson.v1.min.js"></script>
-
   </head>
   <body>
-      <div id="map"> </div>
-      <p>
-    <label for="amount">Amount: </label>
-    <input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;">
-    </p>
+    <h1>Data Visualization Assignment 3</h1>
+    <h3>18011476 윤찬영</h3>
 
-    <div id="slider-range"></div>
-
-    <script src="script/Map1.js"></script>
+    <div id="container">
+      <ul class = "myMenu">
+        <li clsas = "menu1">
+          병원
+          <ul class = "menu1_s submenu">
+            <li>
+              <a href = "html/NumberOfDoctor.html">
+                의사수
+              </a>
+            </li>
+            <li>
+              <a href = "html/drunk_control.html">
+                음주운전 단속 범위 통계
+              </a>
+            </li>
+          </ul>
+        </li>
+        <li class = "menu2">
+          <a href = "html/weather.html">
+            기상관련 교통사고 정보
+          </a>
+        </li>
+        <li class = "menu3">
+          시간대별 교통사고 정보
+          <ul class = "menu3_s submenu">
+            <li>
+              <a href = "html/time_accident.html">
+                시간대별 교통사고 통계
+              </a>
+            </li>
+            <li>
+              <a href = "html/time_dead.html">
+                시간대별 사망사고 비율
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
   </body>
 </html>
+
+<!--
+<div>
+  <a href="weather.html">
+    <img src="image/weather.jpg" onmouseover="this.src='image/weather_hover.jpg'" onmouseout = "this.src='image/weather.jpg'"
+    onmousedown="this.src='image/weather_click.jpg'"/>
+  </a>
+  <a href="time_dead.html">
+    <img src="image/day.jpg" onmouseover="this.src='image/day_hover.jpg'" onmouseout = "this.src='image/day.jpg'"
+    onmousedown="this.src='image/day_click.jpg'"/>
+  </a>
+  <a href="time_accident.html">
+    <img src="image/day.jpg" onmouseover="this.src='image/day_hover.jpg'" onmouseout = "this.src='image/day.jpg'"
+    onmousedown="this.src='image/day_click.jpg'"/>
+  </a>
+  <a href="drunk_drive.html">
+    <img src="image/day.jpg" onmouseover="this.src='image/day_hover.jpg'" onmouseout = "this.src='image/day.jpg'"
+    onmousedown="this.src='image/day_click.jpg'"/>
+  </a>
+</div>
+ -->
