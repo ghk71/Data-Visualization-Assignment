@@ -1,4 +1,5 @@
 var width = 1300, height = 800;
+
 var svg = d3.select("#map")
     .append("svg")
       .attr("width", width)
@@ -20,7 +21,7 @@ var quantize = d3.scaleQuantize()
 var popByName = d3.map();
 
 queue()
-  .defer(d3.json, "../municipalities-topo-simple.json")
+  .defer(d3.json, "../geo/municipalities-topo-simple.json")
   .defer(d3.csv, "../data/Hospital_NumDoctor_Convert.csv", function(d) {
     popByName.set(d.name, +d.doctor);
   })

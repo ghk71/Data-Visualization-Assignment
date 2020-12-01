@@ -15,6 +15,13 @@
       display: inline-block;
     }
 
+    p {
+      font-size:3px;
+      margin-top:0px;
+      margin-left:10px;
+      margin-bottom:70px;
+    }
+
     svg .municipality:hover { stroke: white; }
     svg .municipality.p0 { fill: rgb(247,251,255); }
     svg .municipality.p1 { fill: rgb(222,235,247); }
@@ -25,15 +32,46 @@
     svg .municipality.p6 { fill: rgb(33,113,181); }
     svg .municipality.p7 { fill: rgb(8,81,156); }
     svg .municipality.p8 { fill: rgb(8,48,107); }
+
+    .k {width:20px; height:20px;}
+    .k0 { background:rgb(247,251,255);}
+    .k1 { background:rgb(222,235,247); }
+    .k2 { background:rgb(198,219,239); }
+    .k3 { background:rgb(158,202,225); }
+    .k4 { background:rgb(107,174,214); }
+    .k5 { background:rgb(66,146,198); }
+    .k6 { background:rgb(33,113,181); }
+    .k7 { background:rgb(8,81,156); }
+    .k8 { background:rgb(8,48,107); }
+
     </style>
 
   </head>
   <body>
     <div>
       <h2> 병원 sad How D </h2>
-      <div id="map"> </div>
+      <br>
+      <br>
+      <h4> 의사 수 </h4>
+      <div class="colorBar" style="float:left;">
+        <div class="k k0"></div>
+        <div class="k k1"></div>
+        <div class="k k2"></div>
+        <div class="k k3"></div>
+        <div class="k k4"></div>
+        <div class="k k5"></div>
+        <div class="k k6"></div>
+        <div class="k k7"></div>
+        <div class="k k8"></div>
+      </div>
+      <div style="float:left;">
+        <p>0~110</p>
+        <p>441~550</p>
+        <p>881~</p>
+      </div>
+      <div id="map" style="float:left;"> </div>
     </div>
-    <button style="float:left;margin-right:60px;" onclick="location.href='../index.html'">back to menu</button>
+    <button style="margin-right:60px;" onclick="location.href='../index.html'">back to menu</button>
 
     <script src="../js/NumberOfDoctor.js"></script>
   </body>

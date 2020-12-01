@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/topojson.v1.min.js"></script>
+    <script src="https://d3js.org/queue.v1.min.js"></script>
+    <title></title>
+
+    <style>
+      body {
+        position: absolute;
+      }
+
+      h2 {
+        left: 10px;
+        font-size: 1.3em;
+        font-weight: 100;
+      }
+      h2 {
+        top: 30px;
+        font-size: 1.5em;
+        text-align: center;
+      }
+      .hover {
+        fill: yellow;
+      }
+      #sliderContainer {
+        text-align: center;
+        top: 100px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1> 상급병원 </h1>
+    <br>
+    <br>
+    <br>
+    
+    <div class="chart" style="float:left;">
+      <svg id="my_dataviz" width="1000" height="600"></svg>
+      <div id="sliderContainer">
+        <input id="timeslide" type="range" min="0" max="2" value="0" step="1"> </input>
+        <br>
+        <span id="range"> 병원 </span>
+        <br>
+        <br>
+        <button style="margin-right:60px;" onclick="location.href='../index.html'">back to menu</button>
+      </div>
+    </div>
+    <div class="pie" style="float:right;">
+      <h2></h2>
+    </div>
+    <script src="../js/HospitalClassification.js"></script>
+
+  </body>
+</html>
