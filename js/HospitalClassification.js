@@ -1,7 +1,3 @@
-window.onload = function() {
-  draw();
-}
-
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
@@ -19,61 +15,53 @@ var projection = d3.geoMercator()
 var path = d3.geoPath()
     .projection(projection);
 
-function draw() {
-  queue()
-    .defer(d3.json, "../geo/municipalities-topo-simple.json")
-    .defer(d3.csv, "../data/Hospital.csv")
-    .await(ready);
+queue()
+  .defer(d3.json, "../geo/municipalities-topo-simple.json")
+  .defer(d3.csv, "../data/Hospital.csv")
+  .await(ready);
 
-    function ready(error, dataGeo, data) {
-      var features = topojson.feature(dataGeo, dataGeo.objects["municipalities-geo"]).features;
+  function ready(error, dataGeo, data) {
+    var features = topojson.feature(dataGeo, dataGeo.objects["municipalities-geo"]).features;
 
-      var link = []
-      data.forEach(function(d) {
-        if(d.kind == inputValue) {
-          link.push(d);
-        }
-      })
+    g.selectAll("path")
+      .data(features)
+      .enter().append("path")
+        .attr("fill", "#b8b8b8")
+        .attr("d", d3.geoPath().projection(projection))
+        .style("stroke", "#fff")
+        .style("stroke-width", 0.3);
 
-      g.selectAll("path")
-        .data(features)
-        .enter().append("path")
-          .attr("fill", "#b8b8b8")
-          .attr("d", d3.geoPath().projection(projection))
-          .style("stroke", "#fff")
-          .style("stroke-width", 0.3);
+    var rodents = svg.append("g").attr("class", "circle");
 
-      var rodents = svg.append("g").attr("class", "circle");
+    var path = rodents.selectAll("path")
+        .data(data)
+        .enter().append("circle")
+          .attr("cx", function(d) { return projection([d.longitude, d.latitude])[0]})
+          .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1]})
+          .attr("r", 2)
+          .attr("fill", "red")
+          .attr("stroke", "none")
+          .attr("opacity", 0.4)
+          .attr("d", path)
+          .attr("class", "incident")
+        .on("mouseover", function(d) {
+          if(d.kind == inputValue) {
+            d3.select("h2").text(d.name);
+            d3.select(this).attr("class", "incident hover");
+            drawPie(d);
+          }
+        })
+        .on("mouseout", function(d) {
+          if(d.kind == inputValue) {
+            d3.select("h2").text("");
+            d3.select(this).attr("class", "incident");
 
-      var path = rodents.selectAll("path")
-          .data(link)
-          .enter().append("circle")
-            .attr("cx", function(d) { return projection([d.longitude, d.latitude])[0]})
-            .attr("cy", function(d) { return projection([d.longitude, d.latitude])[1]})
-            .attr("r", 2)
-            .attr("fill", "red")
-            .attr("stroke", "none")
-            .attr("opacity", 0.4)
-            .attr("d", path)
-            .attr("class", "incident")
-          .on("mouseover", function(d) {
-            if(d.kind == inputValue) {
-              d3.select("h2").text(d.name);
-              d3.select(this).attr("class", "incident hover");
-              drawPie(d);
-            }
-          })
-          .on("mouseout", function(d) {
-            if(d.kind == inputValue) {
-              d3.select("h2").text("");
-              d3.select(this).attr("class", "incident");
+            var header = document.querySelector(".p");
+            header.parentNode.removeChild(header);
+          }
+        })
+  }
 
-              var header = document.querySelector(".p");
-              header.parentNode.removeChild(header);
-            }
-          })
-    }
-}
 
 function drawPie(d) {
   var data = new Object();
@@ -134,8 +122,11 @@ function update(value) {
   document.getElementById("range").innerHTML = kind[value];
   inputValue = kind[value];
 
-  var header = document.querySelector(".circle");
-  header.parentNode.removeChild(header);
+  d3.selectAll(".incident")
+      .attr("fill", colorMatch);
+}
 
-  draw();
+function colorMatch(data, value) {
+  if(data.kind == inputValue) return "red";
+  else return "none";
 }
