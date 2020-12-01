@@ -20,8 +20,8 @@ var quantize = d3.scaleQuantize()
 var popByName = d3.map();
 
 queue()
-  .defer(d3.json, "../municipalities-topo-simple.json")
-  .defer(d3.csv, "../data/Hospital_NumDoctor_Convert.csv", function(d) {
+  .defer(d3.json, "municipalities-topo-simple.json")
+  .defer(d3.csv, "Hospital_NumDoctor_Convert.csv", function(d) {
     popByName.set(d.name, +d.doctor);
   })
   .await(ready);
