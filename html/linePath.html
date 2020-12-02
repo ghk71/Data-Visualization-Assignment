@@ -26,22 +26,48 @@
       #sliderContainer{
         text-align: center;
         position: relative;
-        top:600px;
+        top:40px;
       }
+
+      .p1 {
+        background:blue;
+        border: 1px solid black;
+        width:20px;
+        height:20px;
+      }
+
+      .p2  {
+        background: yellow;
+        border: 1px solid black;
+        width:20px;
+        height:20px;
+        margin-top:5px;
+      }
+
     </style>
   </head>
   <body>
     <h1> Line Path Code UTF8</h1>
     <h2></h2>
-    <div id="sliderContainer">
-      <input id="timeslide" type="range" min="0" max="50" value="0" step="0.01"> </input>
-      <br>
-      <span id="range"> 0 </span>
+    <div style="margin-left:200px;margin-top:100px;">
+      <div class="p1"></div>
+      <p style="float:left;margin-top:-23px;margin-left:30px;">
+        소방서
+      </p>
+      <div class="p2"></div>
+      <p style="float:left;margin-top:-23px;margin-left:30px;">
+        병원
+      </p>
     </div>
-    <svg id="my_dataviz" width="1000" height="600"></svg>
-    <br>
-    <br>
-    <button style="margin-right:60px;" onclick="location.href='../index.html'">back to menu</button>
+    <svg id="my_dataviz" width="1000" height="600">
+      <div id="sliderContainer">
+        <input id="timeslide" type="range" min="0" max="50" value="0" step="0.01"> </input>
+        <br>
+        <span id="range"> 0 </span>
+      </div>
+      <br />
+      <button style="margin-top:30px;margin-right:60px;" onclick="location.href='../index.html'">back to menu</button>
+    </svg>
     <script src = "../js/linePath.js"> </script>
   </body>
 </html>

@@ -69,7 +69,7 @@ function ready(error, dataGeo, data) {
         .attr("cy", function(d) {return projection([d.long1, d.lat1])[1]})
         .attr("r", 1)
         .attr("fill", function(d) {
-          if(d.distance >= inputValue) return "red";
+          if(d.distance >= inputValue) return "blue";
           else return "none";
         })
         .attr("class", "Firecircle");
@@ -118,7 +118,7 @@ function hospitalColorMatch(data, value) {
 }
 
 function fireColorMatch(data, value)  {
-  if(data.distance >= inputValue) return "red";
+  if(data.distance >= inputValue) return "blue";
   else return "none";
 }
 
